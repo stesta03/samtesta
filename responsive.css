@@ -1,0 +1,67 @@
+/*	responsive.css
+	Comp20: Lab 4
+	Created by: Sam Testa
+	On: 14 February 2019
+*/
+
+.homer {
+	width: 312px;
+	height: 312px;
+	background-image:url('homer.jpg');
+	background-position: 0px 0px;
+}
+
+
+@media screen and (max-width: 1600px) {
+	.homer {
+		width: 312px;
+		height: 312px;
+		background-image:url('homer.jpg');
+		background-position: 313px 0px;
+	}
+}
+
+@media screen and (max-width: 1400px) {
+	.homer {
+		width: 312px;
+		height: 312px;
+		background-image:url('homer.jpg');
+		background-position: 0px 313px;
+	}
+}
+
+@media screen and (max-width: 1200px) {
+	.homer {
+		width: 312px;
+		height: 312px;
+		background-image:url('homer.jpg');
+		background-position: 313px 313px;
+	}
+}
+
+@media screen and (max-width: 1000px) {
+	.homer {
+		width: 312px;
+		height: 312px;
+		background-image:url('homer.jpg');
+		background-position: 0px 313px;
+	}
+}
+
+@media screen and (max-width: 800px) {
+	.homer {
+		width: 312px;
+		height: 312px;
+		background-image:url('homer.jpg');
+		background-position: 313px 0px
+	}
+}
+
+@media screen and (max-width: 600px) {
+	.homer {
+		width: 312px;
+		height: 312px;
+		background-image:url('homer.jpg');
+		background-position: 0px 0px;
+	}
+}
