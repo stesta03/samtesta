@@ -1,0 +1,17 @@
+/*  style.css
+    a stylesheet for Lab 5
+    Sam Testa
+    22 February 2019
+ */
+
+#title {
+    text-align: center;
+}
+
+#butwehavethepower {
+    alignment: center;
+}
+#lyrics {
+    color: black;
+    text-align: center;
+}
