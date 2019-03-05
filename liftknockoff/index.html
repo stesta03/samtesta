@@ -1,23 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>The Private Car Service™</title>
-    <script src=""
-    <script>
-        var myLat = 0;
-        var myLong = 0;
-        var me = new google.maps.LatLng(myLat, myLng);
-        var map;
-        var marker;
-        var infowindow = new google.maps.InfoWindow();
+    <head>
+        <meta charset="UTF-8">
+        <title>The Private Car Service™</title>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC9sQaGQMUn1TEZG3C11LjRlpQAppS4WGk">
+        </script>
+        <link rel="stylesheet" href="stylesheet.css" />
+
+        <script>
+            var myLat = 0;
+            var myLng = 0;
+            var me = new google.maps.LatLng(myLat, myLng);
+            var myOptions = {
+                zoom: 14,
+                center: me,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            var map;
+            var marker;
+            var infowindow = new google.maps.InfoWindow();
 
 
 
+            function init() {
+                map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+                getMyLocation();
+            }
 
-    </script>
-</head>
+            function getMyLocation() {
+                if (navigator.geolocation) { // the navigator.geolocation object is supported on your browser
+                    navigator.geolocation.getCurrentPosition(function (position) {
+                        myLat = position.coords.latitude;
+                        myLng = position.coords.longitude;
+                        renderMap();
+                    });
+                } else {
+                    alert("Geolocation is not supported by your web browser.  What a shame!");
+                }
+            }
 
-<body>
-</body>
+            function renderMap() {
+                me = new google.maps.LatLng(myLat, myLng);
+                // Update map and go there...
+                map.panTo(me);
+
+                // Create a marker
+                marker = new google.maps.Marker({
+                    position: me,
+                    title: "Here I Am!"
+                });
+                marker.setMap(map);
+
+                // Open info window on click of marker
+                google.maps.event.addListener(marker, 'click', function () {
+                    infowindow.setContent(marker.title);
+                    infowindow.open(map, marker);
+                });
+            }
+
+            function getData() {
+                request = new XMLHttpRequest();
+                request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+                request.open("GET", "https://hans-moleman.herokuapp.com/rides", true);
+
+                // parse the data
+
+
+                request.send("username=UQxC9gBQ&lat="+ myLat + "&lng=" + myLng);
+            }
+
+
+        </script>
+    </head>
+
+    <body onload="init()">
+        <div id="map_canvas"></div>
+    </body>
 </html>
