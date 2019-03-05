@@ -60,11 +60,29 @@
 
             function getData() {
                 request = new XMLHttpRequest();
+
+                request.open("POST", "https://hans-moleman.herokuapp.com/rides", true);
+
                 request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
-                request.open("GET", "https://hans-moleman.herokuapp.com/rides", true);
-
                 // parse the data
+                request.onreadystatechange = function () {
+                    // create array for data
+                    var data = []
+                    if (request.readyState == 4 && request.status == 200) {
+                        console.log("Is this working");
+                        //console.log(request.responseText);
+                        data = JSON.parse(request.responseText);
+                        console.log(data);
+                        text = document.getElementById("users");
+                        text.innerHTML = "hello";
+                        for (count = 0; count < data.length; count++) {
+                            text.innerHTML += "<p>"  + data[count].username + "hello" + "</p>";
+                            console.log("In loop");
+                        }
+                        console.log("hello????");
+                    }
+                }
 
 
                 request.send("username=UQxC9gBQ&lat="+ myLat + "&lng=" + myLng);
@@ -74,7 +92,8 @@
         </script>
     </head>
 
-    <body onload="init()">
-        <div id="map_canvas"></div>
+    <body onload="getData()">
+        <!--<div id="map_canvas"></div>-->
+        <div id="users"></div>
     </body>
 </html>
