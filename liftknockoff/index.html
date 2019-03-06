@@ -18,12 +18,14 @@
             };
             var map;
             var marker;
+            var location;
             var infowindow = new google.maps.InfoWindow();
 
 
 
             function init() {
                 map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+                console.log("Hey");
                 getMyLocation();
             }
 
@@ -33,6 +35,7 @@
                         myLat = position.coords.latitude;
                         myLng = position.coords.longitude;
                         renderMap();
+                        getData();
                     });
                 } else {
                     alert("Geolocation is not supported by your web browser.  What a shame!");
@@ -56,35 +59,42 @@
                     infowindow.setContent(marker.title);
                     infowindow.open(map, marker);
                 });
-                //getData();
 
             }
 
             function getData() {
+                console.log("Help");
                 request = new XMLHttpRequest();
 
                 request.open("POST", "https://hans-moleman.herokuapp.com/rides", true);
 
+                console.log("SOS");
                 request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
                 // parse the data
+                console.log("wat");
                 request.onreadystatechange = function () {
-                    // create array for data
-                    var data = []
-                    if (request.readyState == 4 && request.status == 200) {
+                    console.log("vnsklvs");
+                    if (request.readyState == 4 && request.status == 200)
+                    {
                         console.log("Is this working");
                         console.log(request.responseText);
-                        data = JSON.parse(request.responseText);
-                        if (data.passengers) {
-                            for (i = 0; i < data.passengers.length; i++) {
+                        var data = JSON.parse(request.responseText);
+                        if (data.passengers)
+                        {
+                            console.log("hi");
+                            for (i = 0; i < data.passengers.length; i++)
+                            {
                                 location = new google.maps.LatLng(data.passengers[i].lat, data.passengers[i].lng);
-                                if (data.passengers[i].username == "WEINERMOBILE") {
+                                if (data.passengers[i].username === "WEINERMOBILE")
+                                {
                                     marker = new google.maps.Marker({
                                         position: location,
                                         icon: '/weinermobile.png'
                                     });
                                 }
-                                else {
+                                else
+                                {
                                     marker = new google.maps.Marker({
                                         position: location,
                                         icon: passengers.jpg
@@ -93,10 +103,11 @@
                                 marker.setMap(map);
                             }
                         }
-                        else if (data.vehicles) {
+                        else if (data.vehicles)
+                        {
                             for (i = 0; i < data.vehicles.length; i++) {
                                 location = new google.maps.LatLng(data.vehicles[i].lat, data.vehicles[i].lng);
-                                if (data.vehicles[i].username == "WEINERMOBILE") {
+                                if (data.vehicles[i].username === "WEINERMOBILE") {
                                     marker = new google.maps.Marker({
                                         position: location,
                                         icon: '/weinermobile.png'
@@ -113,11 +124,8 @@
                         }
                     }
                 }
-
-
-                request.send("username=UQxC9gBQ&lat="+ myLat + "&lng=" + myLng);
+                request.send("username=UQxC9gBQ&lat=" + myLat + "&lng=" + myLng);
             }
-
 
         </script>
     </head>
