@@ -8,6 +8,7 @@
         <link rel="stylesheet" href="stylesheet.css" />
 
         <script>
+
             var myLat = 0;
             var myLng = 0;
             var me = new google.maps.LatLng(myLat, myLng);
@@ -25,7 +26,6 @@
 
             function init() {
                 map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-                console.log("Hey");
                 getMyLocation();
             }
 
@@ -35,9 +35,9 @@
                         myLat = position.coords.latitude;
                         myLng = position.coords.longitude;
                         renderMap();
-                        getData();
                     });
-                } else {
+                }
+                else {
                     alert("Geolocation is not supported by your web browser.  What a shame!");
                 }
             }
@@ -63,63 +63,72 @@
             }
 
             function getData() {
-                console.log("Help");
                 request = new XMLHttpRequest();
 
                 request.open("POST", "https://hans-moleman.herokuapp.com/rides", true);
 
-                console.log("SOS");
                 request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
                 // parse the data
-                console.log("wat");
                 request.onreadystatechange = function () {
-                    console.log("vnsklvs");
                     if (request.readyState == 4 && request.status == 200)
                     {
-                        console.log("Is this working");
-                        console.log(request.responseText);
                         var data = JSON.parse(request.responseText);
                         if (data.passengers)
                         {
-                            console.log("hi");
                             for (i = 0; i < data.passengers.length; i++)
                             {
-                                location = new google.maps.LatLng(data.passengers[i].lat, data.passengers[i].lng);
-                                if (data.passengers[i].username === "WEINERMOBILE")
+                                coord = new google.maps.LatLng(data.passengers[i].lat, data.passengers[i].lng);
+                                if (data.passengers[i].username == "WEINERMOBILE")
                                 {
                                     marker = new google.maps.Marker({
-                                        position: location,
+                                        title: 'WEINERMOBILE',
+                                        position: coord,
                                         icon: '/weinermobile.png'
                                     });
                                 }
                                 else
                                 {
                                     marker = new google.maps.Marker({
-                                        position: location,
+                                        title: data.passengers[i].username,
+                                        position: coord,
                                         icon: passengers.jpg
                                     });
                                 }
                                 marker.setMap(map);
+                                google.maps.event.addListener(marker, 'click', function () {
+                                    length = google.maps.geometry.spherical.computeDistanceBetween(me, coord);
+                                    length = length * .000621371;
+                                    infowindow.setContent(marker.title + length);
+                                    infowindow.open(map, marker);
+                                });
                             }
                         }
                         else if (data.vehicles)
                         {
                             for (i = 0; i < data.vehicles.length; i++) {
-                                location = new google.maps.LatLng(data.vehicles[i].lat, data.vehicles[i].lng);
+                                coord = new google.maps.LatLng(data.vehicles[i].lat, data.vehicles[i].lng);
                                 if (data.vehicles[i].username === "WEINERMOBILE") {
                                     marker = new google.maps.Marker({
-                                        position: location,
+                                        title: 'WEINERMOBILE',
+                                        position: coord,
                                         icon: '/weinermobile.png'
                                     });
                                 }
                                 else {
                                     marker = new google.maps.Marker({
-                                        position: location,
+                                        title: data.vehicles[i].username,
+                                        position: coord,
                                         icon: '/vehicle.png'
                                     });
                                 }
                                 marker.setMap(map);
+                                google.maps.event.addListener(marker, 'click', function () {
+                                    length = google.maps.geometry.spherical.computeDistanceBetween(me, coord);
+                                    length = length * .000621371;
+                                    infowindow.setContent(marker.title + length);
+                                    infowindow.open(map, marker);
+                                });
                             }
                         }
                     }
@@ -132,5 +141,8 @@
 
     <body onload="init()">
         <div id = "map_canvas"></div>
+        <script>
+            getData();
+        </script>
     </body>
 </html>
