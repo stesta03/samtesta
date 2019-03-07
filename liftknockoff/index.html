@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <title>The Private Car Service™</title>
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC9sQaGQMUn1TEZG3C11LjRlpQAppS4WGk">
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC9sQaGQMUn1TEZG3C11LjRlpQAppS4WGk&libraries=geometry">
         </script>
         <link rel="stylesheet" href="stylesheet.css" />
 
@@ -92,14 +92,15 @@
                                     marker = new google.maps.Marker({
                                         title: data.passengers[i].username,
                                         position: coord,
-                                        icon: passengers.jpg
+                                        icon: '/passengers.jpg'
                                     });
                                 }
                                 marker.setMap(map);
                                 google.maps.event.addListener(marker, 'click', function () {
                                     length = google.maps.geometry.spherical.computeDistanceBetween(me, coord);
                                     length = length * .000621371;
-                                    infowindow.setContent(marker.title + length);
+                                    infowindow.setContent("");
+                                    infowindow.setContent(marker.title + "\nDistance from me: " + length);
                                     infowindow.open(map, marker);
                                 });
                             }
@@ -126,7 +127,8 @@
                                 google.maps.event.addListener(marker, 'click', function () {
                                     length = google.maps.geometry.spherical.computeDistanceBetween(me, coord);
                                     length = length * .000621371;
-                                    infowindow.setContent(marker.title + length);
+                                    infowindow.setContent("");
+                                    infowindow.setContent(marker.title + "\nDistance from me: " + length);
                                     infowindow.open(map, marker);
                                 });
                             }
